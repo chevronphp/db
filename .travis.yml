@@ -1,0 +1,17 @@
+# see http://about.travis-ci.org/docs/user/languages/php/ for more hints
+language: php
+
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+
+before_script:
+  - mysql -e "create database IF NOT EXISTS chevron_tests;" -uroot;
+
+install:
+  - composer --self-update
+  - composer install
+
+script: ./vendor/bin/fu -r tests/
+
