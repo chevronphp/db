@@ -14,7 +14,7 @@ If there isn't an examples dir, look through the tests.
 
 # installation
 
-Using [composer](http://getcomposer.org/) `"require" : { "henderjon/chevron.db": "1.*" }`
+Using [composer](http://getcomposer.org/) `"require" : { "henderjon/chevron-db": "1.*" }`
 
 # license
 
@@ -22,7 +22,7 @@ See LICENSE.md for the [BSD-3-Clause](http://opensource.org/licenses/BSD-3-Claus
 
 ## links
 
-  - The [Packagist archive](https://packagist.org/packages/henderjon/chevron.db)
+  - The [Packagist archive](https://packagist.org/packages/henderjon/chevron-db)
   - Reading on [Semantic Versioning](http://semver.org/)
   - Reading on[Composer Versioning](https://getcomposer.org/doc/01-basic-usage.md#package-versions)
 

@@ -1,5 +1,5 @@
 {
-	"name"        : "henderjon/chevron.db",
+	"name"        : "henderjon/chevron-db",
 	"type"        : "library",
 	"description" : "a PDO wrapper for making common DB operations slightly easier",
 	"homepage"    : "http://github.com/henderjon/chevron.db",
