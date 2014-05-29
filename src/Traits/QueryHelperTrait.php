@@ -100,6 +100,7 @@ trait QueryHelperTrait {
 		$tmp = $this->mapColumns($map);
 		$columns = array_keys($tmp);
 		$tokens  = array_values($tmp);
+		$temp    = [];
 
 		$count = count($columns);
 		for( $i = 0; $i < $count; ++$i ){

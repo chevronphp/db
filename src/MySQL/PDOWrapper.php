@@ -52,7 +52,7 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 		if( $where ){
 			return $this->update($table, $map, $where);
 		}else{
-			return $this->insert($table, $map, 0);
+			return $this->insert($table, $map);
 		}
 	}
 
@@ -234,7 +234,7 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 			try{
 				$success = $statement->execute($data);
 			}catch(\Exception $e){
-				throw new \PDOException($this->fError($statement, $data));
+				throw new \PDOException($this->fError($statement, $data), 999);
 			}
 
 			if( $success ){
@@ -244,9 +244,9 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 			// deadlock
 			if( $statement->errorCode() == "40001" ){ continue; }
 
-			throw new \PDOException($this->fError($statement));
+			throw new \PDOException($this->fError($statement), 999);
 		}
-		throw new \PDOException("Query Failed after 5 attempts:\n\n{$query}");
+		throw new \PDOException("Query Failed after 5 attempts:\n\n{$query}", 999);
 	}
 
 	/**
@@ -284,7 +284,7 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 			try{
 				$success = $statement->execute($data);
 			}catch(\Exception $e){
-				throw new \PDOException($this->fError($statement, $data));
+				throw new \PDOException($this->fError($statement, $data), 999);
 			}
 
 			if( $success ){
@@ -298,20 +298,20 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 			// deadlock
 			if( $statement->errorCode() == "40001" ){ continue; }
 
-			throw new \PDOException($this->fError($statement));
+			throw new \PDOException($this->fError($statement), 999);
 		}
 
-		throw new \PDOException("Query Failed after 5 attempts:\n\n{$query}");
+		throw new \PDOException("Query Failed after 5 attempts:\n\n{$query}", 999);
 
 	}
 
 	/**
 	 * Beautifies an error message to display
-	 * @param PDOException $obj
+	 * @param \PDOException $obj
 	 * @param bool $rtn A flag to toggle an exit or return
 	 * @return mixed
 	 */
-	protected function fError($obj, $data = null, $rtn = true){
+	protected function fError(\PDOException $obj, $data = null, $rtn = true){
 
 		$err   = $obj->errorInfo();
 		$err[] = $obj->queryString;
