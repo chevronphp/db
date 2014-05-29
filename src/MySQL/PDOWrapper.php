@@ -292,7 +292,7 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 					// only queries that return a result set should have a column count
 					return new \IteratorIterator($statement);
 				}
-				return true;
+				throw new \PDOException("Successful query returned falsey column count", 999);
 			}
 
 			// deadlock
