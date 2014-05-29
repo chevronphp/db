@@ -311,7 +311,7 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 	 * @param bool $rtn A flag to toggle an exit or return
 	 * @return mixed
 	 */
-	protected function fError(\PDOException $obj, $data = null, $rtn = true){
+	protected function fError(\PDOStatement $obj, $data = null, $rtn = true){
 
 		$err   = $obj->errorInfo();
 		$err[] = $obj->queryString;
