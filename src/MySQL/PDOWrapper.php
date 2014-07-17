@@ -4,6 +4,7 @@ namespace Chevron\DB\MySQL;
 
 use \Chevron\DB\Interfaces;
 use \Chevron\DB\Traits;
+use \Chevron\DB\Exceptions\DBException;
 /**
  * A DB wrapper class offering some helpful shortcut methods
  *
@@ -234,7 +235,7 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 			try{
 				$success = $statement->execute($data);
 			}catch(\Exception $e){
-				throw new \PDOException($this->fError($statement, $data), 999);
+				throw new DBException($this->fError($statement, $data));
 			}
 
 			if( $success ){
@@ -244,9 +245,9 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 			// deadlock
 			if( $statement->errorCode() == "40001" ){ continue; }
 
-			throw new \PDOException($this->fError($statement), 999);
+			throw new DBException($this->fError($statement));
 		}
-		throw new \PDOException("Query Failed after 5 attempts:\n\n{$query}", 999);
+		throw new DBException("Query Failed after 5 attempts:\n\n{$query}");
 	}
 
 	/**
@@ -284,7 +285,7 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 			try{
 				$success = $statement->execute($data);
 			}catch(\Exception $e){
-				throw new \PDOException($this->fError($statement, $data), 999);
+				throw new DBException($this->fError($statement, $data));
 			}
 
 			if( $success ){
@@ -292,16 +293,16 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 					// only queries that return a result set should have a column count
 					return new \IteratorIterator($statement);
 				}
-				throw new \PDOException("Successful query returned falsey column count", 999);
+				throw new DBException("Successful query returned falsey column count");
 			}
 
 			// deadlock
 			if( $statement->errorCode() == "40001" ){ continue; }
 
-			throw new \PDOException($this->fError($statement), 999);
+			throw new DBException($this->fError($statement));
 		}
 
-		throw new \PDOException("Query Failed after 5 attempts:\n\n{$query}", 999);
+		throw new DBException("Query Failed after 5 attempts:\n\n{$query}");
 
 	}
 
