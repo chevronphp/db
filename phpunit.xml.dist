@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="tests/PHPUnit/bootstrap.php">
+	<php>
+		<const name="TEST_DB_MYSQL_DSN" value="mysql:host=127.0.0.1;port=3306;dbname=testing;charset=utf8" />
+		<const name="TEST_DB_SQLITE_DSN" value="sqlite:/tmp/test.db" />
+		<const name="TEST_DB_USERNAME" value="root" />
+		<const name="TEST_DB_PASSWORD" value="" />
+	</php>
+	<testsuites>
+		<testsuite name="Library">
+			<directory>tests/PHPUnit</directory>
+		</testsuite>
+    </testsuites>
+    <logging>
+        <log type="coverage-clover" target="clover.xml"/>
+    </logging>
+</phpunit>
+
+
