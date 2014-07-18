@@ -7,7 +7,7 @@ namespace Chevron\DB\Traits;
  * @package Chevron\PDO
  * @author Jon Henderson
  */
-trait QueryHelperTrait {
+trait QueryBuilderTrait {
 
 	/**
 	 * method to pre-parse a query to inject a variable number of "?" tokens into

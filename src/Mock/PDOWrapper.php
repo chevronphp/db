@@ -137,4 +137,24 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 		return $this->shift();
 	}
 
+	/**
+	 * combine the various parts to return a DB specific formatted query
+	 */
+	function makeInsertQuery($table, $columns, $tokens){ /* noop */ }
+
+	/**
+	 * combine the various parts to return a DB specific formatted query
+	 */
+	function makeUpdateQuery($table, $column_map, $conditional_map){ /* noop */ }
+
+	/**
+	 * combine the various parts to return a DB specific formatted query
+	 */
+	function makeReplaceQuery($table, $columns, $tokens){ /* noop */ }
+
+	/**
+	 * combine the various parts to return a DB specific formatted query
+	 */
+	function makeOnDuplicateKeyQuery($table, $column_map, $conditional_map, $column_map){ /* noop */ }
+
 }
