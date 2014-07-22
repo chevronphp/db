@@ -109,7 +109,7 @@ trait WriteQueriesTrait {
 		$statement = $this->prepare($query);
 		// if( !($query InstanceOf \PDOStatement ) ){}
 
-		$retry = $this->numRetries;
+		$retry = $this->numRetries ?: 5;
 		while( $retry-- ){
 			try{
 				$success = $statement->execute($data);
@@ -128,4 +128,42 @@ trait WriteQueriesTrait {
 		}
 		throw new DBException("Query Failed after 5 attempts:\n\n{$query}");
 	}
+
+	/**
+	 * combine the various parts to return a DB specific formatted query
+	 * @param string $table The Table to act on
+	 * @param string $columns The columns to act on
+	 * @param string $tokens The tokens for the values being inserted
+	 * @return string
+	 */
+	protected abstract function makeInsertQuery($table, $columns, $tokens);
+
+	/**
+	 * combine the various parts to return a DB specific formatted query
+	 * @param string $table The Table to act on
+	 * @param string $column_map The "col = ?" pairs
+	 * @param string $conditional_map The conditional clause
+	 * @return string
+	 */
+	protected abstract function makeUpdateQuery($table, $column_map, $conditional_map);
+
+	/**
+	 * combine the various parts to return a DB specific formatted query
+	 * @param string $table The Table to act on
+	 * @param string $columns The columns to act on
+	 * @param string $tokens The tokens for the values being replaced
+	 * @return string
+	 */
+	protected abstract function makeReplaceQuery($table, $columns, $tokens);
+
+	/**
+	 * combine the various parts to return a DB specific formatted query
+	 * @param string $table The Table to act on
+	 * @param string $column_map The "col = ?" pairs
+	 * @param string $conditional_map The conditional clause
+	 * @param string $column_map The columns being updated on key collision
+	 * @return string
+	 */
+	protected abstract function makeOnDuplicateKeyQuery($table, $column_map, $conditional_map, $column_map);
+
 }

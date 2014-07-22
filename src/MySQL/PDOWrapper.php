@@ -18,35 +18,8 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 	use Traits\QueryBuilderTrait;
 	use Traits\WriteQueriesTrait;
 	use Traits\ReadQueriesTrait;
-
-	/**
-	 * the number of times to retry after a mysql error
-	 */
-	protected $numRetries = 5;
-
-	/**
-	 * a lambda to execute before executing a query, usefule for debugging
-	 */
-	protected $inspector;
-
-	/**
-	 * method to set the number of retries after an error
-	 * @param int $num The number of retries
-	 * @return
-	 */
-	function setNumRetries($num){
-		$this->numRetries = (int)$num;
-	}
-
-	/**
-	 * Method to set a lambda as an inspector pre query, The callback will be passed
-	 * three params: PDO $this, string $query, array $data
-	 * @param callable $func
-	 * @return
-	 */
-	function setInspector(callable $func){
-		$this->inspector = $func;
-	}
+	use Traits\RetryAwareTrait;
+	use Traits\InspectorAwareTrait;
 
 	/**
 	 * combine the various parts to return a DB specific formatted query

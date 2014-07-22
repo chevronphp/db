@@ -128,7 +128,7 @@ trait ReadQueriesTrait {
 
 		$statement->setFetchMode($fetch);
 
-		$retry = $this->numRetries;
+		$retry = $this->numRetries ?: 5;
 		while( $retry-- ){
 			try{
 				$success = $statement->execute($data);
