@@ -61,21 +61,16 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 		$error["query"]      = $obj->queryString;
 		$error["num_params"] = $data;
 
-		if($error){
-			$len = 0;
-			foreach($error as $key => $value){
-				if( ($l = strlen($key)) > $len){ $len = $l; }
-			}
-			$_error = "";
-			foreach($error as $key => $value){
-				$_error .= sprintf("%{$len}s => %s\n", $key, $value);
-			}
+		$len = 0;
+		foreach($error as $key => $value){
+			if( ($l = strlen($key)) > $len){ $len = $l; }
+		}
+		$_error = "";
+		foreach($error as $key => $value){
+			$_error .= sprintf("%{$len}s => %s\n", $key, $value);
 		}
 
-		return sprintf(
-			"\n\nThe DB dropped an error !!! %s\n-------------------------\n%s\n\n",
-			strtoupper($level), $message, $_error
-		);
+		return sprintf("\n\nThe DB dropped an error !!!\n-------------------------\n%s\n\n", $_error);
 
 	}
 }
