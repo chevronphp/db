@@ -1,6 +1,6 @@
 <?php
 
-use Chevron\PDO\MySQL;
+use \Chevron\DB;
 
 class MySQLPDOWrapperTest extends PHPUnit_Framework_TestCase {
 
@@ -9,9 +9,11 @@ class MySQLPDOWrapperTest extends PHPUnit_Framework_TestCase {
 	 */
 
 	function getDbConn(){
-		$dbConn = new \Chevron\DB\MySQL\PDOWrapper(TEST_DB_MYSQL_DSN, TEST_DB_USERNAME, TEST_DB_PASSWORD);
+		$dbConn = new \PDO(TEST_DB_MYSQL_DSN, TEST_DB_USERNAME, TEST_DB_PASSWORD);
 		$dbConn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-		return $dbConn;
+
+		// $driver = new DB\Drivers\MySQL;
+		return new DB\PDOWrapper($dbConn, new DB\Drivers\MySQLDriver);
 	}
 
 	function getMethodIn(){
@@ -130,7 +132,7 @@ class MySQLPDOWrapperTest extends PHPUnit_Framework_TestCase {
 
 		$dbConn = $this->getDbConn();
 
-		$num = $dbConn->replace("test_table", array(
+		$num = $dbConn->update("test_table", array(
 			"test_value"  => "fifth value",
 			"test_score"  => 50,
 		), array("test_key" => 4));
@@ -143,7 +145,7 @@ class MySQLPDOWrapperTest extends PHPUnit_Framework_TestCase {
 
 		$dbConn = $this->getDbConn();
 
-		$num = $dbConn->replace("test_table", array(
+		$num = $dbConn->on_duplicate_key("test_table", array(
 			"test_value"  => "tenth value",
 			"test_score"  => 100,
 		), array("test_key" => 10));
@@ -156,12 +158,12 @@ class MySQLPDOWrapperTest extends PHPUnit_Framework_TestCase {
 
 		$dbConn = $this->getDbConn();
 
-		$num = $dbConn->replace("test_table", array(
+		$num = $dbConn->on_duplicate_key("test_table", array(
 			"test_value"  => "sixth value",
 			"test_score"  => 60,
 		), array("test_key" => 4));
 
-		$this->assertEquals(1, $num);
+		$this->assertEquals(2, $num);
 
 	}
 

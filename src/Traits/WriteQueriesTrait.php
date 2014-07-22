@@ -28,7 +28,7 @@ trait WriteQueriesTrait {
 	function insert($table, array $map){
 
 		list($columns, $tokens) = $this->parenPairs($map, 0);
-		$query = $this->makeInsertQuery($table, $columns, $tokens);
+		$query = $this->driver->makeInsertQuery($table, $columns, $tokens);
 		$data  = $this->filterData($map);
 		return $this->exeWriteQuery($query, $data);
 	}
@@ -40,7 +40,7 @@ trait WriteQueriesTrait {
 
 		$column_map      = $this->equalPairs($map, ", ");
 		$conditional_map = $this->equalPairs($where, " and ");
-		$query = $this->makeUpdateQuery($table, $column_map, $conditional_map);
+		$query = $this->driver->makeUpdateQuery($table, $column_map, $conditional_map);
 		$data  = $this->filterData($map, $where);
 		return $this->exeWriteQuery($query, $data);
 	}
@@ -51,7 +51,7 @@ trait WriteQueriesTrait {
 	function replace($table, array $map){
 
 		list($columns, $tokens) = $this->parenPairs($map, 0);
-		$query = $this->makeReplaceQuery($table, $columns, $tokens);
+		$query = $this->driver->makeReplaceQuery($table, $columns, $tokens);
 		$data  = $this->filterData($map);
 		return $this->exeWriteQuery($query, $data);
 	}
@@ -63,7 +63,7 @@ trait WriteQueriesTrait {
 
 		$column_map      = $this->equalPairs($map, ", ");
 		$conditional_map = $this->equalPairs($where, ", ");
-		$query = $this->makeOnDuplicateKeyQuery($table, $column_map, $conditional_map, $column_map);
+		$query = $this->driver->makeOnDuplicateKeyQuery($table, $column_map, $conditional_map);
 		$data  = $this->filterData($map, $where, $map);
 		return $this->exeWriteQuery($query, $data);
 	}
@@ -74,7 +74,7 @@ trait WriteQueriesTrait {
 	function multi_insert($table, array $map){
 
 		list($columns, $tokens) = $this->parenPairs($map, count($map));
-		$query = $this->makeInsertQuery($table, $columns, $tokens);
+		$query = $this->driver->makeInsertQuery($table, $columns, $tokens);
 		$data  = $this->filterMultiData($map);
 		return $this->exeWriteQuery($query, $data);
 	}
@@ -85,7 +85,7 @@ trait WriteQueriesTrait {
 	function multi_replace($table, array $map){
 
 		list($columns, $tokens) = $this->parenPairs($map, count($map));
-		$query = $this->makeReplaceQuery($table, $columns, $tokens);
+		$query = $this->driver->makeReplaceQuery($table, $columns, $tokens);
 		$data  = $this->filterMultiData($map);
 		return $this->exeWriteQuery($query, $data);
 	}
@@ -102,11 +102,9 @@ trait WriteQueriesTrait {
 	 */
 	protected function exeWriteQuery($query, array $data){
 
-		if(is_callable($this->inspector)){
-			call_user_func($this->inspector, $this, $query, $data);
-		}
+		$this->inspect($this, $query, $data);
 
-		$statement = $this->prepare($query);
+		$statement = $this->conn->prepare($query);
 		// if( !($query InstanceOf \PDOStatement ) ){}
 
 		$retry = $this->numRetries ?: 5;
@@ -114,7 +112,7 @@ trait WriteQueriesTrait {
 			try{
 				$success = $statement->execute($data);
 			}catch(\Exception $e){
-				throw new DBException($this->fError($statement, $data));
+				throw new DBException($this->printErr($statement, count($data)));
 			}
 
 			if( $success ){
@@ -124,46 +122,9 @@ trait WriteQueriesTrait {
 			// deadlock
 			if( $statement->errorCode() == "40001" ){ continue; }
 
-			throw new DBException($this->fError($statement));
+			throw new DBException($this->printErr($statement, count($data)));
 		}
 		throw new DBException("Query Failed after 5 attempts:\n\n{$query}");
 	}
-
-	/**
-	 * combine the various parts to return a DB specific formatted query
-	 * @param string $table The Table to act on
-	 * @param string $columns The columns to act on
-	 * @param string $tokens The tokens for the values being inserted
-	 * @return string
-	 */
-	protected abstract function makeInsertQuery($table, $columns, $tokens);
-
-	/**
-	 * combine the various parts to return a DB specific formatted query
-	 * @param string $table The Table to act on
-	 * @param string $column_map The "col = ?" pairs
-	 * @param string $conditional_map The conditional clause
-	 * @return string
-	 */
-	protected abstract function makeUpdateQuery($table, $column_map, $conditional_map);
-
-	/**
-	 * combine the various parts to return a DB specific formatted query
-	 * @param string $table The Table to act on
-	 * @param string $columns The columns to act on
-	 * @param string $tokens The tokens for the values being replaced
-	 * @return string
-	 */
-	protected abstract function makeReplaceQuery($table, $columns, $tokens);
-
-	/**
-	 * combine the various parts to return a DB specific formatted query
-	 * @param string $table The Table to act on
-	 * @param string $column_map The "col = ?" pairs
-	 * @param string $conditional_map The conditional clause
-	 * @param string $column_map The columns being updated on key collision
-	 * @return string
-	 */
-	protected abstract function makeOnDuplicateKeyQuery($table, $column_map, $conditional_map, $column_map);
 
 }

@@ -2,7 +2,7 @@
 
 namespace Chevron\DB\Traits;
 
-use \Chevron\DB\Exceptions\DBException;
+use \Chevron\DB\Interfaces\PDOWrapperInterface as Wrapper;
 /**
  * Implements a few read only shortcut methods
  *
@@ -24,6 +24,15 @@ trait InspectorAwareTrait {
 	 */
 	function setInspector(callable $func){
 		$this->inspector = $func;
+	}
+
+	/**
+	 *
+	 */
+	protected function inspect(Wrapper $PDOWrapper, $query, array $data = null){
+		if(is_callable($this->inspector)){
+			return call_user_func($this->inspector, $PDOWrapper, $query, $data);
+		}
 	}
 
 }

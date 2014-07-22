@@ -119,11 +119,9 @@ trait ReadQueriesTrait {
 		// redundant for IN queries since the data is already flat
 		$data = $this->filterData($map);
 
-		if(is_callable($this->inspector)){
-			call_user_func($this->inspector, $this, $query, $data);
-		}
+		$this->inspect($this, $query, $data);
 
-		$statement = $this->prepare($query);
+		$statement = $this->conn->prepare($query);
 		// if( !($query InstanceOf \PDOStatement ) ){}
 
 		$statement->setFetchMode($fetch);
@@ -133,7 +131,7 @@ trait ReadQueriesTrait {
 			try{
 				$success = $statement->execute($data);
 			}catch(\Exception $e){
-				throw new DBException($this->fError($statement, $data));
+				throw new DBException($this->printErr($statement, count($data)));
 			}
 
 			if( $success ){
@@ -147,7 +145,7 @@ trait ReadQueriesTrait {
 			// deadlock
 			if( $statement->errorCode() == "40001" ){ continue; }
 
-			throw new DBException($this->fError($statement));
+			throw new DBException($this->printErr($statement, count($data)));
 		}
 
 		throw new DBException("Query Failed after 5 attempts:\n\n{$query}");
