@@ -62,7 +62,7 @@ class PDOWrapper extends \PDO implements Interfaces\PDOWrapperInterface {
 	 * @param string $column_map The columns being updated on key collision
 	 * @return string
 	 */
-	protected function makeOnDuplicateKeyQuery($table, $column_map, $conditional_map, $column_map){
+	protected function makeOnDuplicateKeyQuery($table, $column_map, $conditional_map){
 		return sprintf("INSERT INTO `%s` SET %s, %s ON DUPLICATE KEY UPDATE %s;", $table, $column_map, $conditional_map, $column_map);
 	}
 
