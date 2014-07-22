@@ -104,7 +104,7 @@ trait WriteQueriesTrait {
 
 		$this->inspect($this, $query, $data);
 
-		$statement = $this->conn->prepare($query);
+		$statement = $this->prepare($query);
 		// if( !($query InstanceOf \PDOStatement ) ){}
 
 		$retry = $this->numRetries ?: 5;

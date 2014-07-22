@@ -121,7 +121,7 @@ trait ReadQueriesTrait {
 
 		$this->inspect($this, $query, $data);
 
-		$statement = $this->conn->prepare($query);
+		$statement = $this->prepare($query);
 		// if( !($query InstanceOf \PDOStatement ) ){}
 
 		$statement->setFetchMode($fetch);
