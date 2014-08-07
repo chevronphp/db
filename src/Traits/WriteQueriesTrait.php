@@ -107,10 +107,15 @@ trait WriteQueriesTrait {
 		$statement = $this->prepare($query);
 		// if( !($query InstanceOf \PDOStatement ) ){}
 
+		foreach ($data as $i => $value) {
+			$paramType = is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
+			$statement->bindValue(($i + 1), $value, $paramType);
+		}
+
 		$retry = $this->numRetries ?: 5;
 		while( $retry-- ){
 			try{
-				$success = $statement->execute($data);
+				$success = $statement->execute();
 			}catch(\Exception $e){
 				throw new DBException($this->printErr($statement, count($data)));
 			}
