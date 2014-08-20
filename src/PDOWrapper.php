@@ -20,6 +20,7 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 	use Traits\ReadQueriesTrait;
 	use Traits\RetryAwareTrait;
 	use Traits\InspectorAwareTrait;
+	use Traits\ExeQueryTrait;
 
 	/**
 	 *

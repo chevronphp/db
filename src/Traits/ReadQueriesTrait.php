@@ -109,54 +109,12 @@ trait ReadQueriesTrait {
 	 * @return array
 	 */
 	protected function exeReadQuery($query, array $map, $in, $fetch = \PDO::FETCH_BOTH){
-
-		if($in){
-			// this syntax (returning an array with two values) is a little more
-			// esoteric than i'd prefer ... but it works
-			list( $query, $map ) = $this->in( $query, $map );
+		$statement = $this->exeQuery($query, $map, $in, $fetch);
+		if( $statement->columnCount() ){
+			// only queries that return a result set should have a column count
+			return new \IteratorIterator($statement);
 		}
-
-		// redundant for IN queries since the data is already flat
-		$data = $this->filterData($map);
-
-		$this->inspect($this, $query, $data);
-
-		$statement = $this->prepare($query);
-		// if( !($query InstanceOf \PDOStatement ) ){}
-
-		$statement->setFetchMode($fetch);
-
-		$i = 1;
-		foreach ($data as $value) {
-			$paramType = is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
-			$statement->bindValue($i, $value, $paramType);
-			$i += 1;
-		}
-
-		$retry = $this->numRetries ?: 5;
-		while( $retry-- ){
-			try{
-				$success = $statement->execute();
-			}catch(\Exception $e){
-				throw new DBException($this->printErr($statement, count($data)));
-			}
-
-			if( $success ){
-				if( $statement->columnCount() ){
-					// only queries that return a result set should have a column count
-					return new \IteratorIterator($statement);
-				}
-				throw new DBException("Successful query returned falsey column count");
-			}
-
-			// deadlock
-			if( $statement->errorCode() == "40001" ){ continue; }
-
-			throw new DBException($this->printErr($statement, count($data)));
-		}
-
-		throw new DBException("Query Failed after 5 attempts:\n\n{$query}");
-
+		throw new DBException("Successful query returned falsey column count", 0, $e);
 	}
 
 }

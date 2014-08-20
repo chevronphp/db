@@ -102,36 +102,7 @@ trait WriteQueriesTrait {
 	 */
 	protected function exeWriteQuery($query, array $data){
 
-		$this->inspect($this, $query, $data);
-
-		$statement = $this->prepare($query);
-		// if( !($query InstanceOf \PDOStatement ) ){}
-
-		$i = 1;
-		foreach ($data as $value) {
-			$paramType = is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
-			$statement->bindValue($i, $value, $paramType);
-			$i += 1;
-		}
-
-		$retry = $this->numRetries ?: 5;
-		while( $retry-- ){
-			try{
-				$success = $statement->execute();
-			}catch(\Exception $e){
-				throw new DBException($this->printErr($statement, count($data)));
-			}
-
-			if( $success ){
-				return $statement->rowCount();
-			}
-
-			// deadlock
-			if( $statement->errorCode() == "40001" ){ continue; }
-
-			throw new DBException($this->printErr($statement, count($data)));
-		}
-		throw new DBException("Query Failed after 5 attempts:\n\n{$query}");
+		$statement = $this->exeQuery($query, $data);
+		return $statement->rowCount();
 	}
-
 }

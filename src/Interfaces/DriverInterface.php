@@ -44,6 +44,14 @@ interface DriverInterface {
 	 * @return string
 	 */
 	function makeOnDuplicateKeyQuery($table, $column_map, $conditional_map);
+
+	/**
+	 * test the statement's error code and decide to retry the query
+	 * @param int $errorCode The error code
+	 * @return bool
+	 */
+	function shouldRetry($errorCode);
+
 }
 
 
