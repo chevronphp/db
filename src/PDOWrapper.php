@@ -23,17 +23,17 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 	use Traits\ExeQueryTrait;
 
 	/**
-	 *
+	 * a connected PDO object
 	 */
 	protected $conn;
 
 	/**
-	 *
+	 * the vendor spcific driver to use when building queries.
 	 */
 	protected $driver;
 
 	/**
-	 *
+	 * assign the PDO connection and the vendor specifiec query builder
 	 */
 	function __construct(\PDO $conn, Interfaces\DriverInterface $driver){
 		$this->conn = $conn;
