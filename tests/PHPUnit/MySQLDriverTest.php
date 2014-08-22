@@ -103,6 +103,21 @@ class MySQLPDOWrapperTest extends PHPUnit_Framework_TestCase {
 
 	}
 
+	/**
+	 * @expectedException \PDOException
+	 */
+	function test_replace_as_insert_exception(){
+
+		$dbConn = $this->getDbConn();
+
+		$num = $dbConn->replace("test_table", array(
+			"test_not_value"  => "replacement fourth value",
+		));
+
+		$this->assertEquals(1, $num);
+
+	}
+
 	function test_replace_as_insert(){
 
 		$dbConn = $this->getDbConn();

@@ -114,7 +114,9 @@ trait ReadQueriesTrait {
 			// only queries that return a result set should have a column count
 			return new \IteratorIterator($statement);
 		}
-		throw new DBException("Successful query returned falsey column count", 0, $e);
+		$this->logError(new DBException("Successful query returned falsey column count"), [
+			"query_string"  => $statement->queryString,
+		]);
 	}
 
 }

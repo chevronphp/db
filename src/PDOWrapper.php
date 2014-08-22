@@ -4,6 +4,7 @@ namespace Chevron\DB;
 
 use \Chevron\DB\Interfaces;
 use \Chevron\DB\Traits;
+use \Psr\Log;
 
 /**
  * A DB wrapper class offering some helpful shortcut methods
@@ -14,6 +15,8 @@ use \Chevron\DB\Traits;
  * @author Jon Henderson
  */
 class PDOWrapper implements Interfaces\PDOWrapperInterface {
+
+	use Log\LoggerAwareTrait;
 
 	use Traits\QueryBuilderTrait;
 	use Traits\WriteQueriesTrait;
@@ -51,28 +54,31 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 	}
 
 	/**
-	 * Beautifies an error message to display
-	 * @param \PDOException $obj
-	 * @param bool $rtn A flag to toggle an exit or return
-	 * @return mixed
+	 * passes info to a logger before throwing the passed PDOException
+	 * @param \PDOException $e
+	 * @param array $context an array of additional information
+	 * @return
 	 */
-	protected function printErr(\PDOStatement $obj, $data = 0){
+	protected function logError(\PDOException $e, array $context = []){
 
-		$error               = $obj->errorInfo();
-		$error["query"]      = $obj->queryString;
-		$error["num_params"] = $data;
+		$error = [
+			"message"   => $e->getMessage(),
+			"code"      => $e->getCode(),
+			"file"      => $e->getFile(),
+			"line"      => $e->getLine(),
+		];
 
-		$len = 0;
-		foreach($error as $key => $value){
-			if( ($l = strlen($key)) > $len){ $len = $l; }
+		$error = $error + $context;
+
+		if(!$this->logger){
+			$this->logger = new Log\NullLogger;
 		}
-		$_error = "";
-		foreach($error as $key => $value){
-			$_error .= sprintf("%{$len}s => %s\n", $key, $value);
-		}
 
-		return sprintf("\n\nThe DB dropped an error !!!\n-------------------------\n%s\n\n", $_error);
+		$this->logger->error($e->getCode(), $error);
+
+		throw $e;
 
 	}
+
 }
 

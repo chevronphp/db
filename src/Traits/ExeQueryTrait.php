@@ -43,8 +43,16 @@ trait ExeQueryTrait {
 		while( $retry-- ){
 			try{
 				$success = $statement->execute();
-			}catch(\Exception $e){
-				throw new DBException($this->printErr($statement, count($data)));
+			}catch(\PDOException $e){
+				list($sqlState, $driverCode, $driverMessage) = $statement->errorInfo();
+
+				$this->logError($e, [
+					"SQLSTATE"     => $sqlState,
+					"driver_code"  => $driverCode,
+					"driver_msg"   => $driverMessage,
+					"query_string" => $statement->queryString,
+					"param_count"  => count($data),
+				]);
 			}
 
 			if( $success ){
@@ -56,10 +64,16 @@ trait ExeQueryTrait {
 				continue;
 			}
 
-			throw new DBException($this->printErr($statement, count($data)));
+			$this->logError(new DBException("Query Failed w/o Exception"), [
+				"query_string" => $statement->queryString,
+				"param_count"  => count($data),
+			]);
 		}
 
-		throw new DBException("Query Failed after 5 attempts:\n\n{$query}");
+		$this->logError(new DBException("Query Failed after 5 attempts"), [
+			"query_string" => $statement->queryString,
+			"param_count"  => count($data),
+		]);
 
 	}
 
