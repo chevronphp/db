@@ -7,4 +7,4 @@ namespace Chevron\DB\Exceptions;
  * @package Chevron\DB
  * @author Jon Henderson
  */
-class DBException extends \Exception {}
+class DBException extends \PDOException {}
