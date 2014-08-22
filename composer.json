@@ -15,7 +15,9 @@
 		"irc" : "irc://irc.freenode.org/henderjon"
 	},
 	"require": {
-		"php" : ">=5.4.0"
+		"php"                       : ">=5.4.0",
+		"psr/log"                   : "~1.0",
+		"henderjon/chevron-loggers" : "~4.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit" : "~4.0"
