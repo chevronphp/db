@@ -1,8 +1,8 @@
 {
-	"name"        : "henderjon/chevron-db",
+	"name"        : "chevron/db",
 	"type"        : "library",
 	"description" : "a PDO wrapper for making common DB operations slightly easier",
-	"homepage"    : "http://github.com/henderjon/chevron.db",
+	"homepage"    : "http://github.com/chevronphp/db",
 	"license"     : "BSD-3-Clause",
 	"authors"     : [
 		{
@@ -15,12 +15,14 @@
 		"irc" : "irc://irc.freenode.org/henderjon"
 	},
 	"require": {
-		"php"                       : ">=5.4.0",
-		"psr/log"                   : "~1.0",
-		"henderjon/chevron-loggers" : "~4.0"
+		"php"             : ">=5.4.0",
+		"psr/log"         : "~1.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit" : "~4.0"
+	},
+	"suggest": {
+		"chevron/loggers" : "~4.0"
 	},
 	"autoload": {
 		"psr-4": {
