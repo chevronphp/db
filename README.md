@@ -1,4 +1,4 @@
-# chevron.db
+# chevron/db
 
 Db is a simple PDO wrapper that offers some basic security and a few
 helper methods to make interacting with DBs a little easier. While write queries
