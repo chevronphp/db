@@ -35,7 +35,7 @@ trait ExeQueryTrait {
 		$i = 1;
 		foreach ($data as $value) {
 			$paramType = is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
-			$statement->bindValue($i, $value, $paramType);
+			$statement->bindValue($i, (int)$value, $paramType);
 			$i += 1;
 		}
 
