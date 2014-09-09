@@ -70,11 +70,9 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 
 		$error = $error + $context;
 
-		if(!$this->logger){
-			$this->logger = new Log\NullLogger;
+		if($this->logger InstanceOf Log\LoggerInterface){
+			$this->logger->error($e->getCode(), $error);
 		}
-
-		$this->logger->error($e->getCode(), $error);
 
 		throw $e;
 
