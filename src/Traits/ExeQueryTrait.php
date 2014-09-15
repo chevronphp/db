@@ -57,6 +57,7 @@ trait ExeQueryTrait {
 					"SQLSTATE"     => $sqlState,
 					"driver_code"  => $driverCode,
 					"driver_msg"   => $driverMessage,
+					"error_code"   => $statement->errorCode(),
 					"query_string" => $statement->queryString,
 					"param_count"  => count($data),
 				]);
@@ -65,10 +66,11 @@ trait ExeQueryTrait {
 
 		list($sqlState, $driverCode, $driverMessage) = $statement->errorInfo();
 
-		$this->logError($e, [
+		$this->logError(new DBException("Query failed after {$this->numRetries} attempts."), [
 			"SQLSTATE"     => $sqlState,
 			"driver_code"  => $driverCode,
 			"driver_msg"   => $driverMessage,
+			"error_code"   => $statement->errorCode(),
 			"query_string" => $statement->queryString,
 			"param_count"  => count($data),
 		]);
