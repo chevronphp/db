@@ -18,7 +18,7 @@ interface PDOWrapperInterface extends ReadQueriesInterface, WriteQueriesInterfac
 	/**
 	 *
 	 */
-	// function logError(\PDOException $e, array $context = []);
+	function logError(\PDOException $e, array $context = []);
 
 }
 
