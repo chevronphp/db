@@ -42,8 +42,9 @@ trait ExeQueryTrait {
 		$retry = $this->numRetries ?: 5;
 		while( $retry-- ){
 			try{
-				$success = $statement->execute();
-				return $statement;
+				if($success = $statement->execute()){
+					return $statement;
+				}
 			}catch(\PDOException $e){
 
 				// let the driver decide to retry on error codes
