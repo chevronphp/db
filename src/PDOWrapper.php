@@ -41,6 +41,8 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 	function __construct(\PDO $conn, Interfaces\DriverInterface $driver){
 		$this->conn = $conn;
 		$this->driver = $driver;
+
+		$this->conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 	}
 
 	/**
@@ -59,7 +61,7 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 	 * @param array $context an array of additional information
 	 * @return
 	 */
-	protected function logError(\PDOException $e, array $context = []){
+	function logError(\PDOException $e, array $context = []){
 
 		$error = [
 			"message"   => $e->getMessage(),

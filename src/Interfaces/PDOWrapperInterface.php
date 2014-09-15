@@ -15,5 +15,10 @@ interface PDOWrapperInterface extends ReadQueriesInterface, WriteQueriesInterfac
 	 */
 	function __construct(\PDO $conn, DriverInterface $driver);
 
+	/**
+	 *
+	 */
+	// function logError(\PDOException $e, array $context = []);
+
 }
 
