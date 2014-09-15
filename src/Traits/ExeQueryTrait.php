@@ -43,7 +43,14 @@ trait ExeQueryTrait {
 		while( $retry-- ){
 			try{
 				$success = $statement->execute();
+				return $statement;
 			}catch(\PDOException $e){
+
+				// let the driver decide to retry on error codes
+				if($this->driver->shouldRetry( $statement )){
+					continue;
+				}
+
 				list($sqlState, $driverCode, $driverMessage) = $statement->errorInfo();
 
 				$this->logError($e, [
@@ -54,23 +61,14 @@ trait ExeQueryTrait {
 					"param_count"  => count($data),
 				]);
 			}
-
-			if( $success ){
-				return $statement;
-			}
-
-			// let the driver decide to retry on error codes
-			if($this->driver->shouldRetry( $statement->errorCode() )){
-				continue;
-			}
-
-			$this->logError(new DBException("Query Failed w/o Exception"), [
-				"query_string" => $statement->queryString,
-				"param_count"  => count($data),
-			]);
 		}
 
-		$this->logError(new DBException("Query Failed after 5 attempts"), [
+		list($sqlState, $driverCode, $driverMessage) = $statement->errorInfo();
+
+		$this->logError($e, [
+			"SQLSTATE"     => $sqlState,
+			"driver_code"  => $driverCode,
+			"driver_msg"   => $driverMessage,
 			"query_string" => $statement->queryString,
 			"param_count"  => count($data),
 		]);

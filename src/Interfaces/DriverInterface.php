@@ -50,7 +50,7 @@ interface DriverInterface {
 	 * @param int $errorCode The error code
 	 * @return bool
 	 */
-	function shouldRetry($errorCode);
+	function shouldRetry(\PDOStatement $statement);
 
 }
 

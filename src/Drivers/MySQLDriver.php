@@ -61,9 +61,9 @@ class MySQLDriver implements Interfaces\DriverInterface {
 	 * @param int $errorCode The error code
 	 * @return bool
 	 */
-	function shouldRetry($errorCode){
+	function shouldRetry(\PDOStatement $statement){
 		// deadlock
-		if($errorCode == "40001"){
+		if($statement->errorCode() == "40001"){
 			return true;
 		}
 		return false;
