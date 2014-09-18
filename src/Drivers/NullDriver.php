@@ -8,23 +8,23 @@ use \Chevron\DB\Interfaces;
 class NullDriver implements Interfaces\DriverInterface {
 
 	function makeInsertQuery($table, $columns, $tokens){
-		return "";
+		//noop
 	}
 
 	function makeUpdateQuery($table, $column_map, $conditional_map){
-		return "";
+		//noop
 	}
 
 	function makeReplaceQuery($table, $columns, $tokens){
-		return "";
+		//noop
 	}
 
 	function makeOnDuplicateKeyQuery($table, $column_map, $conditional_map){
-		return "";
+		//noop
 	}
 
 	function shouldRetry(\PDOStatement $statement){
-		return false;
+		//noop
 	}
 
 }
