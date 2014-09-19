@@ -245,6 +245,28 @@ class NullDriverTest extends PHPUnit_Framework_TestCase {
 
 	}
 
+	function test_assoc(){
+
+		$dbConn = $this->getDbConn();
+
+		$sql = "select * from test_table where test_key in(%s) order by test_key;";
+		$vals = $dbConn->assoc($sql, array(array(1, 2)), true);
+		$expected = array(
+			array(
+				"test_key"   => "1",
+				"test_value" => "first value",
+				"test_score" => "10",
+			),
+			array(
+				"test_key"   => "2",
+				"test_value" => "second value",
+				"test_score" => "20",
+			),
+		);
+		$this->assertEquals([], $vals);
+
+	}
+
 	function test_exe(){
 
 		$dbConn = $this->getDbConn();

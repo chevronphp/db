@@ -27,6 +27,6 @@ class NullDriver implements Interfaces\NullDriverInterface {
 		//noop
 	}
 
-	function isNullDriver(){}
+	function isNullDriver(){ return true; }
 
 }

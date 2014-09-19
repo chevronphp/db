@@ -26,7 +26,10 @@ trait ReadQueriesTrait {
 	function assoc($query, array $map = array(), $in = false){
 
 		$result = $this->exeReadQuery($query, $map, $in, \PDO::FETCH_ASSOC);
-		return iterator_to_array($result) ?: array();
+		if($result InstanceOf \Traversable){
+			return iterator_to_array($result);
+		}
+		return array();
 	}
 
 	/**
