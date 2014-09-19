@@ -2,6 +2,7 @@
 
 namespace Chevron\DB\Traits;
 
+use \Chevron\DB\Interfaces;
 use \Chevron\DB\Exceptions\DBException;
 /**
  * Implements a few write only shortcut methods
@@ -101,6 +102,7 @@ trait WriteQueriesTrait {
 	 * @return int
 	 */
 	protected function exeWriteQuery($query, array $data){
+		if($this->driver InstanceOf Interfaces\NullDriverInterface){ return null; }
 
 		$statement = $this->exeQuery($query, $data);
 		return $statement->rowCount();

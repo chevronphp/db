@@ -2,6 +2,7 @@
 
 namespace Chevron\DB\Traits;
 
+use \Chevron\DB\Interfaces;
 use \Chevron\DB\Exceptions\DBException;
 /**
  * Implements a few read only shortcut methods
@@ -109,6 +110,8 @@ trait ReadQueriesTrait {
 	 * @return array
 	 */
 	protected function exeReadQuery($query, array $map, $in, $fetch = \PDO::FETCH_BOTH){
+		if($this->driver InstanceOf Interfaces\NullDriverInterface){ return []; }
+
 		$statement = $this->exeQuery($query, $map, $in, $fetch);
 		if( $statement->columnCount() ){
 			// only queries that return a result set should have a column count

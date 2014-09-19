@@ -5,7 +5,7 @@ namespace Chevron\DB\Drivers;
 use \Chevron\DB\Interfaces;
 
 // use this for typehinted injection
-class NullDriver implements Interfaces\DriverInterface {
+class NullDriver implements Interfaces\NullDriverInterface {
 
 	function makeInsertQuery($table, $columns, $tokens){
 		//noop
@@ -26,5 +26,7 @@ class NullDriver implements Interfaces\DriverInterface {
 	function shouldRetry(\PDOStatement $statement){
 		//noop
 	}
+
+	function isNullDriver(){}
 
 }

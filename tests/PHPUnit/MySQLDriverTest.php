@@ -2,7 +2,7 @@
 
 use \Chevron\DB;
 
-class MySQLPDOWrapperTest extends PHPUnit_Framework_TestCase {
+class MySQLDriverTest extends PHPUnit_Framework_TestCase {
 
 	/*
 	 * fixtures
