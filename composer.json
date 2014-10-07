@@ -15,16 +15,16 @@
 		"irc" : "irc://irc.freenode.org/henderjon"
 	},
 	"require": {
-		"php"    : "~5.4",
-		"mysql"  : "~5.5",
-		"sqlite" : "~3.8",
+		"php"    : "~5.5",
 		"psr/log": "~1.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit" : "~4.0"
 	},
 	"suggest": {
-		"chevron/loggers": "~4.0"
+		"chevron/loggers": "~4.0",
+		"mysql"  : "~5.5",
+		"sqlite" : "~3.8"
 	},
 	"autoload": {
 		"psr-4": {
