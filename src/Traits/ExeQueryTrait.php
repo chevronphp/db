@@ -2,6 +2,8 @@
 
 namespace Chevron\DB\Traits;
 
+use Chevron\DB\Exceptions\DBException;
+
 trait ExeQueryTrait {
 
 	/**
