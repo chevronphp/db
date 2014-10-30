@@ -3,8 +3,27 @@
 namespace Chevron\DB\Traits;
 
 use Chevron\DB\Exceptions\DBException;
+use Psr\Log\LoggerInterface;
 
 trait ExeQueryTrait {
+
+	protected $inspector;
+
+	/**
+	 * inject an inspector
+	 */
+	function setInspector(LoggerInterface $inspector){
+		$this->inspector = $inspector;
+	}
+
+	/**
+	 * inspect the query before execution
+	 */
+	protected function inspect(array $data = []){
+		if($this->inspector InstanceOf LoggerInterface){
+			$this->inspector->info("query inspection", $data);
+		}
+	}
 
 	/**
 	 * method to debug (if necessary), execute a query, retrying if necessary,
@@ -27,7 +46,11 @@ trait ExeQueryTrait {
 		// redundant for IN queries since the data is already flat
 		$data = $this->filterData($map);
 
-		$this->inspect($this, $query, $data);
+		$this->inspect([
+			"driver" => get_class($this->driver),
+			"query"  => $query,
+			"data"   => $data,
+		]);
 
 		$statement = $this->prepare($query);
 		// if( !($query InstanceOf \PDOStatement ) ){}
@@ -79,6 +102,5 @@ trait ExeQueryTrait {
 		]);
 
 	}
-
 
 }
