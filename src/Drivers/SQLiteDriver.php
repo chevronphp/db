@@ -11,9 +11,6 @@ use \Chevron\DB\Interfaces;
  */
 class SQLiteDriver implements Interfaces\DriverInterface {
 
-	const UPSERT_INSERT = "insert";
-	const UPSERT_UPDATE = "update";
-
 	/**
 	 * combine the various parts to return a DB specific formatted query
 	 * @param string $table The Table to act on
