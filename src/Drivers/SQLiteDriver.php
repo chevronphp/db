@@ -3,6 +3,7 @@
 namespace Chevron\DB\Drivers;
 
 use \Chevron\DB\Interfaces;
+use \Chevron\DB\Exceptions\DBException;
 /**
  * vendor specific driver
  *
@@ -54,6 +55,7 @@ class SQLiteDriver implements Interfaces\DriverInterface {
 	 * @return string
 	 */
 	function makeOnDuplicateKeyQuery($table, $column_map, $conditional_map){
+		throw new DBException(__CLASS__ . " does not support this method.");
 		// insert or ignore
 		// update
 	}

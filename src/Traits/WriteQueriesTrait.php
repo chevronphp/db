@@ -64,7 +64,12 @@ trait WriteQueriesTrait {
 
 		$column_map      = $this->equalPairs($map, ", ");
 		$conditional_map = $this->equalPairs($where, ", ");
-		$query = $this->driver->makeOnDuplicateKeyQuery($table, $column_map, $conditional_map);
+		try{
+			$query = $this->driver->makeOnDuplicateKeyQuery($table, $column_map, $conditional_map);
+		}catch(DBException $e){
+			$this->logError($e);
+			return 0;
+		}
 		$data  = $this->filterData($map, $where, $map);
 		return $this->exeWriteQuery($query, $data);
 	}

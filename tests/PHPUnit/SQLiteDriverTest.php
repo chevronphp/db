@@ -159,31 +159,37 @@ class SQLiteDriverTest extends PHPUnit_Framework_TestCase {
 
 	}
 
-	// function test_on_duplicate_key_as_insert(){
+	/**
+	 * @expectedException \PDOException
+	 */
+	function test_on_duplicate_key_as_insert(){
 
-	// 	$dbConn = $this->getDbConn();
+		$dbConn = $this->getDbConn();
 
-	// 	$num = $dbConn->on_duplicate_key("test_table", array(
-	// 		"test_value"  => "tenth value",
-	// 		"test_score"  => 100,
-	// 	), array("test_key" => 10));
+		$num = $dbConn->on_duplicate_key("test_table", array(
+			"test_value"  => "tenth value",
+			"test_score"  => 100,
+		), array("test_key" => 10));
 
-	// 	$this->assertEquals(1, $num);
+		$this->assertEquals(1, $num);
 
-	// }
+	}
 
-	// function test_on_duplicate_key_as_update(){
+	/**
+	 * @expectedException \PDOException
+	 */
+	function test_on_duplicate_key_as_update(){
 
-	// 	$dbConn = $this->getDbConn();
+		$dbConn = $this->getDbConn();
 
-	// 	$num = $dbConn->on_duplicate_key("test_table", array(
-	// 		"test_value"  => "sixth value",
-	// 		"test_score"  => 60,
-	// 	), array("test_key" => 4));
+		$num = $dbConn->on_duplicate_key("test_table", array(
+			"test_value"  => "sixth value",
+			"test_score"  => 60,
+		), array("test_key" => 4));
 
-	// 	$this->assertEquals(2, $num);
+		$this->assertEquals(2, $num);
 
-	// }
+	}
 
 	function test_multi_insert(){
 
