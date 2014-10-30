@@ -35,8 +35,6 @@ class StubWrapper implements Interfaces\PDOWrapperInterface {
 
 	function keypair($query, array $map = array(), $in = false){ return $this->unshift(); }
 
-	function put($table, array $map, array $where = array()){ return $this->unshift(); }
-
 	function insert($table, array $map){ return $this->unshift(); }
 
 	function update($table, array $map, array $where = array()){ return $this->unshift(); }

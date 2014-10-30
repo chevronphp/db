@@ -22,8 +22,8 @@ trait ReadQueriesTrait {
 	 * @param int $fetch The fetch method
 	 * @return array
 	 */
-	function exe($query, array $map = [], $in = false){
-		$statement = $this->read($query, $map, $in);
+	function exe($query, array $map = [], $in = false, $fetch = \PDO::FETCH_BOTH){
+		$statement = $this->read($query, $map, $in, $fetch);
 		return ($statement InstanceOf \PDOStatement) ? $statement->fetchAll() : [];
 	}
 
@@ -31,8 +31,7 @@ trait ReadQueriesTrait {
 	 * For documentation, consult the ReadQueriesInterface
 	 */
 	function assoc($query, array $map = [], $in = false){
-		$statement = $this->read($query, $map, $in, \PDO::FETCH_ASSOC);
-		return ($statement InstanceOf \PDOStatement) ? $statement->fetchAll() : [];
+		return $this->exe($query, $map, $in, \PDO::FETCH_ASSOC);
 	}
 
 	/**

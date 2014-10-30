@@ -35,10 +35,6 @@ class NullWrapper implements Interfaces\PDOWrapperInterface {
 
 	function keypair($query, array $map = array(), $in = false){ return []; }
 
-
-
-	function put($table, array $map, array $where = array()){ return 0; }
-
 	function insert($table, array $map){ return 0; }
 
 	function update($table, array $map, array $where = array()){ return 0; }

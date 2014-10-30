@@ -99,7 +99,7 @@ interface ReadQueriesInterface {
 	 * @param string $query The query to execute
 	 * @param array $map The data to use in execution
 	 * @param bool $in A flag to parse the query for WHERE IN clauses
-	 * @return Traversable|array
+	 * @return string
 	 */
 	function scalar($query, array $map = array(), $in = false);
 
