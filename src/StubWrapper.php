@@ -5,9 +5,13 @@ namespace Chevron\DB;
 use Chevron\DB\Interfaces;
 use Psr\Log;
 
-class DbStub implements Interfaces\PDOWrapperInterface {
+class StubWrapper implements Interfaces\PDOWrapperInterface {
 
-	function __construct(\PDO $conn, Interfaces\DriverInterface $driver){
+	function setConnection(\PDO $pdo){
+		// noop
+	}
+
+	function setDriver(Interfaces\DriverInterface $driver){
 		// noop
 	}
 

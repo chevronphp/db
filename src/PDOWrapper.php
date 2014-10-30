@@ -22,7 +22,6 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 	use Traits\WriteQueriesTrait;
 	use Traits\ReadQueriesTrait;
 	use Traits\RetryAwareTrait;
-	use Traits\InspectorAwareTrait;
 	use Traits\ExeQueryTrait;
 
 	/**
@@ -36,13 +35,18 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 	protected $driver;
 
 	/**
-	 * assign the PDO connection and the vendor specifiec query builder
+	 * set the PDO connection
 	 */
-	function __construct(\PDO $conn, Interfaces\DriverInterface $driver){
-		$this->conn = $conn;
-		$this->driver = $driver;
-
+	function setConnection(\PDO $pdo){
+		$this->conn = $pdo;
 		$this->conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+	}
+
+	/**
+	 * set the vendor specifiec query builder
+	 */
+	function setDriver(Interfaces\DriverInterface $driver = null){
+		$this->driver = $driver;
 	}
 
 	/**

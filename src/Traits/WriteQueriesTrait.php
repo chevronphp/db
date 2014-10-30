@@ -102,8 +102,6 @@ trait WriteQueriesTrait {
 	 * @return int
 	 */
 	protected function exeWriteQuery($query, array $data){
-		if($this->driver InstanceOf Interfaces\NullDriverInterface){ return null; }
-
 		$statement = $this->exeQuery($query, $data);
 		return $statement->rowCount();
 	}

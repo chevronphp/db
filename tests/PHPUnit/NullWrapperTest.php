@@ -2,18 +2,15 @@
 
 use \Chevron\DB;
 
-class NullDriverTest extends PHPUnit_Framework_TestCase {
+class NullWrapperTest extends PHPUnit_Framework_TestCase {
 
 	/*
 	 * fixtures
 	 */
 
 	function getDbConn(){
-		$dbConn = new \PDO(TEST_DB_MYSQL_DSN, TEST_DB_USERNAME, TEST_DB_PASSWORD);
-		$dbConn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
 		// $driver = new DB\Drivers\MySQL;
-		return new DB\PDOWrapper($dbConn, new DB\Drivers\NullDriver);
+		return new DB\NullWrapper;
 	}
 
 	function test_insert_insert(){
@@ -25,7 +22,7 @@ class NullDriverTest extends PHPUnit_Framework_TestCase {
 			"test_score"  => 100,
 		));
 
-		$this->assertEquals(null, $num);
+		$this->assertEquals(0, $num);
 
 	}
 
@@ -37,7 +34,7 @@ class NullDriverTest extends PHPUnit_Framework_TestCase {
 			"test_value"  => "replacement fourth value",
 		));
 
-		$this->assertEquals(null, $num);
+		$this->assertEquals(0, $num);
 
 	}
 
@@ -50,7 +47,7 @@ class NullDriverTest extends PHPUnit_Framework_TestCase {
 			"test_key" => 4,
 		));
 
-		$this->assertEquals(null, $num);
+		$this->assertEquals(0, $num);
 
 	}
 
@@ -63,7 +60,7 @@ class NullDriverTest extends PHPUnit_Framework_TestCase {
 			"test_score"  => 50,
 		), array("test_key" => 4));
 
-		$this->assertEquals(null, $num);
+		$this->assertEquals(0, $num);
 
 	}
 
@@ -76,7 +73,7 @@ class NullDriverTest extends PHPUnit_Framework_TestCase {
 			"test_score"  => 100,
 		), array("test_key" => 10));
 
-		$this->assertEquals(null, $num);
+		$this->assertEquals(0, $num);
 
 	}
 
@@ -89,7 +86,7 @@ class NullDriverTest extends PHPUnit_Framework_TestCase {
 			"test_score"  => 60,
 		), array("test_key" => 4));
 
-		$this->assertEquals(null, $num);
+		$this->assertEquals(0, $num);
 
 	}
 
@@ -108,7 +105,7 @@ class NullDriverTest extends PHPUnit_Framework_TestCase {
 			),
 		));
 
-		$this->assertEquals(null, $num);
+		$this->assertEquals(0, $num);
 
 	}
 
@@ -129,7 +126,7 @@ class NullDriverTest extends PHPUnit_Framework_TestCase {
 			),
 		));
 
-		$this->assertEquals(null, $num);
+		$this->assertEquals(0, $num);
 
 	}
 
@@ -139,7 +136,7 @@ class NullDriverTest extends PHPUnit_Framework_TestCase {
 
 		$sql = "select test_value from test_table where test_key = ?;";
 		$val = $dbConn->scalar($sql, array(1));
-		$this->assertEquals(null, $val);
+		$this->assertEquals("", $val);
 
 	}
 

@@ -13,7 +13,11 @@ class MySQLDriverTest extends PHPUnit_Framework_TestCase {
 		$dbConn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
 		// $driver = new DB\Drivers\MySQL;
-		return new DB\PDOWrapper($dbConn, new DB\Drivers\MySQLDriver);
+		$inst = new DB\PDOWrapper;
+		$inst->setConnection($dbConn);
+		$inst->setDriver(new DB\Drivers\MySQLDriver);
+
+		return $inst;
 	}
 
 	function getMethodIn(){

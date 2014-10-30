@@ -2,10 +2,10 @@
 
 use Chevron\DB;
 
-class MockTest extends PHPUnit_Framework_TestCase {
+class StubWrapperTest extends PHPUnit_Framework_TestCase {
 
 	function getInst(){
-		return new DB\DbStub(new DB\Mocks\MockPdo, new DB\Drivers\NullDriver);
+		return new DB\StubWrapper;
 	}
 
 	function test_interface(){
