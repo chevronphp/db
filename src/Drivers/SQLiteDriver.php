@@ -11,6 +11,9 @@ use \Chevron\DB\Interfaces;
  */
 class SQLiteDriver implements Interfaces\DriverInterface {
 
+	const UPSERT_INSERT = "insert";
+	const UPSERT_UPDATE = "update";
+
 	/**
 	 * combine the various parts to return a DB specific formatted query
 	 * @param string $table The Table to act on
@@ -57,6 +60,18 @@ class SQLiteDriver implements Interfaces\DriverInterface {
 		// insert or ignore
 		// update
 	}
+
+	// function upsert(){
+	// 	$that = $this;
+	// 	return [
+	// 		function($table, $columns, $tokens)use($that){
+	// 			return sprintf("INSERT OR IGNORE INTO `%s` %s VALUES %s;", $table, $columns, $tokens);
+	// 		},
+	// 		function($table, $column_map, $conditional_map)use($that){
+	// 			return $that->makeUpdateQuery($table, $column_map, $conditional_map);
+	// 		},
+	// 	];
+	// }
 
 	/**
 	 * test the statement's error code and decide to retry the query

@@ -12,8 +12,11 @@ class SQLiteDriverTest extends PHPUnit_Framework_TestCase {
 		$dbConn = new \PDO(TEST_DB_SQLITE_DSN);
 		$dbConn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-		// $driver = new DB\Drivers\MySQL;
-		return new DB\PDOWrapper($dbConn, new DB\Drivers\SQLiteDriver);
+		$inst = new DB\PDOWrapper;
+		$inst->setConnection($dbConn);
+		$inst->setDriver(new DB\Drivers\SQLiteDriver);
+
+		return $inst;
 	}
 
 	function getMethodIn(){
