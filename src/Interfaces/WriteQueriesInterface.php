@@ -10,16 +10,6 @@ namespace Chevron\DB\Interfaces;
 interface WriteQueriesInterface {
 
 	/**
-	 * Capture both INSERT and UPDATE queries and dispatch accordingly
-	 *
-	 * @param string $table The table name to act on
-	 * @param array $map An array of columns => values
-	 * @param array $where An array of columns => values
-	 * @return int
-	 */
-	function put($table, array $map, array $where = array());
-
-	/**
 	 * Capture INSERT queries. As with all of the "PUT helpers"
 	 * the array $map can take an array(true, "FUNC") where func is an unescaped
 	 * value, usually a SQL function.

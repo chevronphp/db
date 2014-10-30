@@ -13,41 +13,44 @@ use \Chevron\DB\Exceptions\DBException;
 trait ReadQueriesTrait {
 
 	/**
-	 * For documentation, consult the ReadQueriesInterface
+	 * method to debug (if necessary), execute a query, retrying if necessary,
+	 * will prepare the query before execution, returning the result
+	 *
+	 * @param string $query The query to execute
+	 * @param array $map The data to pass to the query
+	 * @param bool $in A toggle to pre parse the query to use the IN clause
+	 * @param int $fetch The fetch method
+	 * @return array
 	 */
-	function exe($query, array $map = array(), $in = false){
-
-		return $this->exeReadQuery($query, $map, $in);
+	function exe($query, array $map = [], $in = false){
+		$statement = $this->read($query, $map, $in);
+		return ($statement InstanceOf \PDOStatement) ? $statement->fetchAll() : [];
 	}
 
 	/**
 	 * For documentation, consult the ReadQueriesInterface
 	 */
-	function assoc($query, array $map = array(), $in = false){
-
-		$result = $this->exeReadQuery($query, $map, $in, \PDO::FETCH_ASSOC);
-		if($result InstanceOf \Traversable){
-			return iterator_to_array($result);
-		}
-		return array();
+	function assoc($query, array $map = [], $in = false){
+		$statement = $this->read($query, $map, $in, \PDO::FETCH_ASSOC);
+		return ($statement InstanceOf \PDOStatement) ? $statement->fetchAll() : [];
 	}
 
 	/**
 	 * For documentation, consult the ReadQueriesInterface
 	 */
-	function row($query, array $map = array(), $in = false){
+	function row($query, array $map = [], $in = false){
 
-		$result = $this->exeReadQuery($query, $map, $in);
+		$result = $this->read($query, $map, $in);
 		foreach($result as $row){ return $row; }
-		return array();
+		return [];
 	}
 
 	/**
 	 * For documentation, consult the ReadQueriesInterface
 	 */
-	function scalar($query, array $map = array(), $in = false){
+	function scalar($query, array $map = [], $in = false){
 
-		$result = $this->exeReadQuery($query, $map, $in);
+		$result = $this->read($query, $map, $in);
 		foreach($result as $row){ return $row[0]; }
 		return null;
 	}
@@ -55,10 +58,10 @@ trait ReadQueriesTrait {
 	/**
 	 * For documentation, consult the ReadQueriesInterface
 	 */
-	function scalars($query, array $map = array(), $in = false){
+	function scalars($query, array $map = [], $in = false){
 
-		$result = $this->exeReadQuery($query, $map, $in);
-		$final = array();
+		$result = $this->read($query, $map, $in);
+		$final = [];
 		foreach($result as $row){ $final[] = $row[0]; }
 		return $final;
 	}
@@ -66,40 +69,40 @@ trait ReadQueriesTrait {
 	/**
 	 * For documentation, consult the ReadQueriesInterface
 	 */
-	function keypair($query, array $map = array(), $in = false){
+	function keypair($query, array $map = [], $in = false){
 
-		$result = $this->exeReadQuery($query, $map, $in);
-		$final = array();
+		$result = $this->read($query, $map, $in);
+		$final = [];
 		foreach($result as $row){
 			$final[$row[0]] = $row[1];
 		}
-		return $final ?: array();
+		return $final ?: [];
 	}
 
 	/**
 	 * For documentation, consult the ReadQueriesInterface
 	 */
-	function keyrow($query, array $map = array(), $in = false){
+	function keyrow($query, array $map = [], $in = false){
 
-		$result = $this->exeReadQuery($query, $map, $in);
-		$final = array();
+		$result = $this->read($query, $map, $in);
+		$final = [];
 		foreach($result as $row){
 			$final[$row[0]] = $row;
 		}
-		return $final ?: array();
+		return $final ?: [];
 	}
 
 	/**
 	 * For documentation, consult the ReadQueriesInterface
 	 */
-	function keyrows($query, array $map = array(), $in = false){
+	function keyrows($query, array $map = [], $in = false){
 
-		$result = $this->exeReadQuery($query, $map, $in);
-		$final = array();
+		$result = $this->read($query, $map, $in);
+		$final = [];
 		foreach($result as $row){
 			$final[$row[0]][] = $row;
 		}
-		return $final ?: array();
+		return $final ?: [];
 	}
 
 	/**
@@ -112,15 +115,9 @@ trait ReadQueriesTrait {
 	 * @param int $fetch The fetch method
 	 * @return array
 	 */
-	protected function exeReadQuery($query, array $map, $in, $fetch = \PDO::FETCH_BOTH){
+	function read($query, array $map = [], $in = false, $fetch = \PDO::FETCH_BOTH){
 		$statement = $this->exeQuery($query, $map, $in, $fetch);
-		if( $statement->columnCount() ){
-			// only queries that return a result set should have a column count
-			return new \IteratorIterator($statement);
-		}
-		$this->logError(new DBException("Successful query returned falsey column count"), [
-			"query_string"  => $statement->queryString,
-		]);
+		return ($statement InstanceOf \Traversable) ? $statement : [];
 	}
 
 }

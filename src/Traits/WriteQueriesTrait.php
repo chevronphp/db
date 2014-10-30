@@ -15,23 +15,12 @@ trait WriteQueriesTrait {
 	/**
 	 * For documentation, consult the WriteQueriesInterface
 	 */
-	function put($table, array $map, array $where = array()){
-		if( $where ){
-			return $this->update($table, $map, $where);
-		}else{
-			return $this->insert($table, $map);
-		}
-	}
-
-	/**
-	 * For documentation, consult the WriteQueriesInterface
-	 */
 	function insert($table, array $map){
 
 		list($columns, $tokens) = $this->parenPairs($map, 0);
 		$query = $this->driver->makeInsertQuery($table, $columns, $tokens);
 		$data  = $this->filterData($map);
-		return $this->exeWriteQuery($query, $data);
+		return $this->write($query, $data);
 	}
 
 	/**
@@ -43,7 +32,7 @@ trait WriteQueriesTrait {
 		$conditional_map = $this->equalPairs($where, " and ");
 		$query = $this->driver->makeUpdateQuery($table, $column_map, $conditional_map);
 		$data  = $this->filterData($map, $where);
-		return $this->exeWriteQuery($query, $data);
+		return $this->write($query, $data);
 	}
 
 	/**
@@ -54,7 +43,7 @@ trait WriteQueriesTrait {
 		list($columns, $tokens) = $this->parenPairs($map, 0);
 		$query = $this->driver->makeReplaceQuery($table, $columns, $tokens);
 		$data  = $this->filterData($map);
-		return $this->exeWriteQuery($query, $data);
+		return $this->write($query, $data);
 	}
 
 	/**
@@ -71,7 +60,7 @@ trait WriteQueriesTrait {
 			return 0;
 		}
 		$data  = $this->filterData($map, $where, $map);
-		return $this->exeWriteQuery($query, $data);
+		return $this->write($query, $data);
 	}
 
 	/**
@@ -82,7 +71,7 @@ trait WriteQueriesTrait {
 		list($columns, $tokens) = $this->parenPairs($map, count($map));
 		$query = $this->driver->makeInsertQuery($table, $columns, $tokens);
 		$data  = $this->filterMultiData($map);
-		return $this->exeWriteQuery($query, $data);
+		return $this->write($query, $data);
 	}
 
 	/**
@@ -93,7 +82,7 @@ trait WriteQueriesTrait {
 		list($columns, $tokens) = $this->parenPairs($map, count($map));
 		$query = $this->driver->makeReplaceQuery($table, $columns, $tokens);
 		$data  = $this->filterMultiData($map);
-		return $this->exeWriteQuery($query, $data);
+		return $this->write($query, $data);
 	}
 
 
@@ -106,7 +95,7 @@ trait WriteQueriesTrait {
 	 * @param array $data The data to pass to the query
 	 * @return int
 	 */
-	protected function exeWriteQuery($query, array $data){
+	protected function write($query, array $data){
 		$statement = $this->exeQuery($query, $data);
 		return $statement->rowCount();
 	}

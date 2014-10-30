@@ -20,7 +20,7 @@ interface ReadQueriesInterface {
 	 * @param string $query The query to execute
 	 * @param array $map The data to use in execution
 	 * @param bool $in A flag to parse the query for WHERE IN clauses
-	 * @return IteratorIterator
+	 * @return Traversable|array
 	 */
 	function exe($query, array $map = array(), $in = false);
 
@@ -35,7 +35,7 @@ interface ReadQueriesInterface {
 	 * @param string $query The query to execute
 	 * @param array $map The data to use in execution
 	 * @param bool $in A flag to parse the query for WHERE IN clauses
-	 * @return array
+	 * @return Traversable|array
 	 */
 	function assoc($query, array $map = array(), $in = false);
 
@@ -50,7 +50,7 @@ interface ReadQueriesInterface {
 	 * @param string $query The query to execute
 	 * @param array $map The data to use in execution
 	 * @param bool $in A flag to parse the query for WHERE IN clauses
-	 * @return array
+	 * @return Traversable|array
 	 */
 	function row($query, array $map = array(), $in = false);
 
@@ -65,7 +65,7 @@ interface ReadQueriesInterface {
 	 * @param string $query The query to execute
 	 * @param array $map The data to use in execution
 	 * @param bool $in A flag to parse the query for WHERE IN clauses
-	 * @return array
+	 * @return Traversable|array
 	 */
 	function keyrow($query, array $map = array(), $in = false);
 
@@ -83,7 +83,7 @@ interface ReadQueriesInterface {
 	 * @param string $query The query to execute
 	 * @param array $map The data to use in execution
 	 * @param bool $in A flag to parse the query for WHERE IN clauses
-	 * @return array
+	 * @return Traversable|array
 	 */
 	function keyrows($query, array $map = array(), $in = false);
 
@@ -99,7 +99,7 @@ interface ReadQueriesInterface {
 	 * @param string $query The query to execute
 	 * @param array $map The data to use in execution
 	 * @param bool $in A flag to parse the query for WHERE IN clauses
-	 * @return scalar
+	 * @return Traversable|array
 	 */
 	function scalar($query, array $map = array(), $in = false);
 
@@ -115,7 +115,7 @@ interface ReadQueriesInterface {
 	 * @param string $query The query to execute
 	 * @param array $map The data to use in execution
 	 * @param bool $in A flag to parse the query for WHERE IN clauses
-	 * @return array
+	 * @return Traversable|array
 	 */
 	function scalars($query, array $map = array(), $in = false);
 
@@ -132,7 +132,7 @@ interface ReadQueriesInterface {
 	 * @param string $query The query to execute
 	 * @param array $map The data to use in execution
 	 * @param bool $in A flag to parse the query for WHERE IN clauses
-	 * @return IteratorIterator
+	 * @return Traversable|array
 	 */
 	function keypair($query, array $map = array(), $in = false);
 
