@@ -7,7 +7,7 @@ queries.
 
 Peruse the tests or, if present, the examples directory to see usage.
 
-See [packagist](https://packagist.org/packages/chevron/db) for version/installation info. At the moment, I recommend using `"chevron/db":"~4.0"`.
+See [packagist](https://packagist.org/packages/chevron/db) for version/installation info.
 
 [![Latest Stable Version](https://poser.pugx.org/chevron/db/v/stable.svg)](https://packagist.org/packages/chevron/db)
 [![Build Status](https://travis-ci.org/chevronphp/db.svg?branch=master)](https://travis-ci.org/chevronphp/db)
