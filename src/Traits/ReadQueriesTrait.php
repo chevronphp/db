@@ -114,7 +114,7 @@ trait ReadQueriesTrait {
 	 * @param int $fetch The fetch method
 	 * @return array
 	 */
-	function read($query, array $map = [], $in = false, $fetch = \PDO::FETCH_BOTH){
+	protected function read($query, array $map = [], $in = false, $fetch = \PDO::FETCH_BOTH){
 		$statement = $this->exeQuery($query, $map, $in, $fetch);
 		return ($statement InstanceOf \Traversable) ? $statement : [];
 	}
