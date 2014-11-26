@@ -105,6 +105,10 @@ class MySQLDriverTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(1, $num);
 
+		$sql = "select test_value from test_table where test_key = ?;";
+		$val = $dbConn->scalar($sql, array(10));
+		$this->assertEquals("tenth value", $val);
+
 	}
 
 	/**
