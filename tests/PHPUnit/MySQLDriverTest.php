@@ -8,13 +8,19 @@ class MySQLDriverTest extends PHPUnit_Framework_TestCase {
 	 * fixtures
 	 */
 
-	function getDbConn(){
-		$dbConn = new \PDO(TEST_DB_MYSQL_DSN, TEST_DB_USERNAME, TEST_DB_PASSWORD);
+	function getDbConn($writable = true){
+
+		if($cert = []){
+			$cert = [\PDO::MYSQL_ATTR_SSL_CA => $cert];
+		}
+
+		$dbConn = new \PDO(TEST_DB_MYSQL_DSN, TEST_DB_USERNAME, TEST_DB_PASSWORD, $cert);
 		$dbConn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
 		// $driver = new DB\Drivers\MySQL;
 		$inst = new DB\PDOWrapper;
 		$inst->setConnection($dbConn);
+		$inst->setWritable($writable);
 		$inst->setDriver(new DB\Drivers\MySQLDriver);
 
 		return $inst;
@@ -129,6 +135,21 @@ class MySQLDriverTest extends PHPUnit_Framework_TestCase {
 	function test_replace_as_insert(){
 
 		$dbConn = $this->getDbConn();
+
+		$num = $dbConn->replace("test_table", array(
+			"test_value"  => "replacement fourth value",
+		));
+
+		$this->assertEquals(1, $num);
+
+	}
+
+	/**
+	 * @expectedException \PDOException
+	 */
+	function test_replace_not_writable(){
+
+		$dbConn = $this->getDbConn(false);
 
 		$num = $dbConn->replace("test_table", array(
 			"test_value"  => "replacement fourth value",

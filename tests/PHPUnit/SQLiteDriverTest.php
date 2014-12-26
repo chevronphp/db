@@ -8,12 +8,13 @@ class SQLiteDriverTest extends PHPUnit_Framework_TestCase {
 	 * fixtures
 	 */
 
-	function getDbConn(){
+	function getDbConn($writable = true){
 		$dbConn = new \PDO(TEST_DB_SQLITE_DSN);
 		$dbConn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
 		$inst = new DB\PDOWrapper;
 		$inst->setConnection($dbConn);
+		$inst->setWritable($writable);
 		$inst->setDriver(new DB\Drivers\SQLiteDriver);
 
 		return $inst;

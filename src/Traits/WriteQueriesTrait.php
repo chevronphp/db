@@ -12,6 +12,10 @@ use \Chevron\DB\Exceptions\DBException;
  */
 trait WriteQueriesTrait {
 
+	protected $isWritable;
+
+	abstract function setWritable();
+
 	/**
 	 * For documentation, consult the WriteQueriesInterface
 	 */
@@ -96,6 +100,11 @@ trait WriteQueriesTrait {
 	 * @return int
 	 */
 	protected function write($query, array $data){
+
+		if($this->isWritable !== true){
+			throw new DBException("DB connection not writable.");
+		}
+
 		$statement = $this->exeQuery($query, $data);
 		return $statement->rowCount();
 	}

@@ -49,6 +49,10 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 		$this->driver = $driver;
 	}
 
+	function setWritable($bool){
+		$this->isWritable = (bool)$bool;
+	}
+
 	/**
 	 * catch method calls meant for PDO
 	 * @param string $name The method being called
