@@ -54,17 +54,20 @@ trait WriteQueriesTrait {
 	 * For documentation, consult the WriteQueriesInterface
 	 */
 	function on_duplicate_key($table, array $map, array $where){
+		if(method_exists($this->driver, "makeOnDuplicateKeyQuery")){
+			$column_map      = $this->equalPairs($map, ", ");
+			$conditional_map = $this->equalPairs($where, ", ");
 
-		$column_map      = $this->equalPairs($map, ", ");
-		$conditional_map = $this->equalPairs($where, ", ");
-		try{
 			$query = $this->driver->makeOnDuplicateKeyQuery($table, $column_map, $conditional_map);
-		}catch(DBException $e){
-			$this->logError($e);
-			return 0;
+			$data  = $this->filterData($map, $where, $map);
+			return $this->write($query, $data);
 		}
-		$data  = $this->filterData($map, $where, $map);
-		return $this->write($query, $data);
+
+		$rows = $this->update($table, $map, $where);
+		if($rows == 0){
+			$rows = $this->insert($table, array_merge($map, $where));
+		}
+		return $rows;
 	}
 
 	/**

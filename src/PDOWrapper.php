@@ -5,6 +5,7 @@ namespace Chevron\DB;
 use \Chevron\DB\Interfaces;
 use \Chevron\DB\Traits;
 use \Psr\Log;
+use Chevron\DB\Exceptions\DBException;
 
 /**
  * A DB wrapper class offering some helpful shortcut methods
@@ -84,7 +85,7 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 			$this->logger->error($e->getCode(), $error);
 		}
 
-		throw $e;
+		throw new DBException($e->getMessage(), $e->getLine(), $e, $error);
 
 	}
 

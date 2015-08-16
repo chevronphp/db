@@ -160,9 +160,6 @@ class SQLiteDriverTest extends PHPUnit_Framework_TestCase {
 
 	}
 
-	/**
-	 * @expectedException \PDOException
-	 */
 	function test_on_duplicate_key_as_insert(){
 
 		$dbConn = $this->getDbConn();
@@ -176,9 +173,6 @@ class SQLiteDriverTest extends PHPUnit_Framework_TestCase {
 
 	}
 
-	/**
-	 * @expectedException \PDOException
-	 */
 	function test_on_duplicate_key_as_update(){
 
 		$dbConn = $this->getDbConn();
@@ -188,7 +182,7 @@ class SQLiteDriverTest extends PHPUnit_Framework_TestCase {
 			"test_score"  => 60,
 		), array("test_key" => 4));
 
-		$this->assertEquals(2, $num);
+		$this->assertEquals(1, $num);
 
 	}
 

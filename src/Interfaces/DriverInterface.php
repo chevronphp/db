@@ -43,7 +43,7 @@ interface DriverInterface {
 	 * @param string $column_map The columns being updated on key collision
 	 * @return string
 	 */
-	function makeOnDuplicateKeyQuery($table, $column_map, $conditional_map);
+	// function makeOnDuplicateKeyQuery($table, $column_map, $conditional_map);
 
 	/**
 	 * test the statement's error code and decide to retry the query
