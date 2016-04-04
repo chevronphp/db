@@ -385,6 +385,28 @@ class MySQLDriverTest extends PHPUnit_Framework_TestCase {
 
 	}
 
+	function test_rows(){
+
+		$dbConn = $this->getDbConn();
+
+		$sql = "select * from test_table where test_key in(%s) order by test_key;";
+		$vals = $dbConn->rows($sql, array(array(1, 2)), true);
+		$expected = array(
+			array(
+				"1",
+				"first value",
+				"10",
+			),
+			array(
+				"2",
+				"second value",
+				"20",
+			),
+		);
+		$this->assertEquals($expected, $vals);
+
+	}
+
 	function test_exe(){
 
 		$dbConn = $this->getDbConn();

@@ -37,6 +37,13 @@ trait ReadQueriesTrait {
 	/**
 	 * For documentation, consult the ReadQueriesInterface
 	 */
+	function rows($query, array $map = [], $in = false){
+		return $this->exe($query, $map, $in, \PDO::FETCH_NUM);
+	}
+
+	/**
+	 * For documentation, consult the ReadQueriesInterface
+	 */
 	function row($query, array $map = [], $in = false){
 
 		$result = $this->read($query, $map, $in);
