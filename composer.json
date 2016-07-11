@@ -15,7 +15,7 @@
 		"irc" : "irc://irc.freenode.org/henderjon"
 	},
 	"require": {
-		"php"    : "~5.5",
+		"php"    : ">=5.5",
 		"psr/log": "~1.0"
 	},
 	"require-dev": {
