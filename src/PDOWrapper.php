@@ -19,6 +19,7 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 
 	use Log\LoggerAwareTrait;
 
+	use Traits\LazyPDOConnectionTrait;
 	use Traits\QueryBuilderTrait;
 	use Traits\WriteQueriesTrait;
 	use Traits\ReadQueriesTrait;
@@ -26,22 +27,9 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 	use Traits\ExeQueryTrait;
 
 	/**
-	 * a connected PDO object
-	 */
-	protected $conn;
-
-	/**
 	 * the vendor spcific driver to use when building queries.
 	 */
 	protected $driver;
-
-	/**
-	 * set the PDO connection
-	 */
-	function setConnection(\PDO $pdo){
-		$this->conn = $pdo;
-		$this->conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-	}
 
 	/**
 	 * set the vendor specifiec query builder
@@ -61,7 +49,7 @@ class PDOWrapper implements Interfaces\PDOWrapperInterface {
 	 * @return string|bool
 	 */
 	function __call($name, $args){
-		return call_user_func_array([$this->conn, $name], $args);
+		return call_user_func_array([$this->getConnection(), $name], $args);
 	}
 
 	/**

@@ -13,7 +13,7 @@ interface PDOWrapperInterface extends ReadQueriesInterface, WriteQueriesInterfac
 	/**
 	 *
 	 */
-	function setConnection(\PDO $pdo);
+	function setConnection($pdo);
 
 	/**
 	 *

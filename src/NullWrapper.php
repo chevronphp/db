@@ -7,7 +7,7 @@ use Psr\Log;
 
 class NullWrapper implements Interfaces\PDOWrapperInterface {
 
-	function setConnection(\PDO $pdo){
+	function setConnection($pdo){
 		// noop
 	}
 
