@@ -279,11 +279,8 @@ class MySQLDriverTest extends PHPUnit_Framework_TestCase {
 		$vals = $dbConn->row($sql, array(array(1, 2)), true);
 		$expected = array(
 			"test_key"   => "1",
-			0            => "1",
 			"test_value" => "first value",
-			1            => "first value",
 			"test_score" => "10",
-			2            => "10",
 		);
 		$this->assertEquals($expected, $vals);
 
@@ -393,14 +390,14 @@ class MySQLDriverTest extends PHPUnit_Framework_TestCase {
 		$vals = $dbConn->rows($sql, array(array(1, 2)), true);
 		$expected = array(
 			array(
-				"1",
-				"first value",
-				"10",
+				'test_key'   => "1",
+				'test_value' => "first value",
+				'test_score' => "10",
 			),
 			array(
-				"2",
-				"second value",
-				"20",
+				'test_key'   => "2",
+				'test_value' => "second value",
+				'test_score' => "20",
 			),
 		);
 		$this->assertEquals($expected, $vals);
@@ -1099,11 +1096,8 @@ class MySQLDriverTest extends PHPUnit_Framework_TestCase {
 		$vals = $dbConn->row($sql, array(array("one" => "1", "two" => "2")), true);
 		$expected = array(
 			"test_key"   => "1",
-			0            => "1",
 			"test_value" => "first value",
-			1            => "first value",
 			"test_score" => "10",
-			2            => "10",
 		);
 		$this->assertEquals($expected, $vals);
 

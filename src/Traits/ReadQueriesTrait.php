@@ -22,7 +22,7 @@ trait ReadQueriesTrait {
 	 * @param int $fetch The fetch method
 	 * @return array
 	 */
-	function exe($query, array $map = [], $in = false, $fetch = \PDO::FETCH_BOTH){
+	function exe($query, array $map = [], $in = false, $fetch = \PDO::FETCH_ASSOC){
 		$statement = $this->read($query, $map, $in, $fetch);
 		return ($statement InstanceOf \PDOStatement) ? $statement->fetchAll() : [];
 	}
@@ -37,16 +37,15 @@ trait ReadQueriesTrait {
 	/**
 	 * For documentation, consult the ReadQueriesInterface
 	 */
-	function rows($query, array $map = [], $in = false){
-		return $this->exe($query, $map, $in, \PDO::FETCH_NUM);
+	function rows($query, array $map = [], $in = false, $fetch = \PDO::FETCH_ASSOC){
+		return $this->exe($query, $map, $in, $fetch);
 	}
 
 	/**
 	 * For documentation, consult the ReadQueriesInterface
 	 */
-	function row($query, array $map = [], $in = false){
-
-		$result = $this->read($query, $map, $in);
+	function row($query, array $map = [], $in = false, $fetch = \PDO::FETCH_ASSOC){
+		$result = $this->read($query, $map, $in, $fetch);
 		foreach($result as $row){ return $row; }
 		return [];
 	}
@@ -55,8 +54,7 @@ trait ReadQueriesTrait {
 	 * For documentation, consult the ReadQueriesInterface
 	 */
 	function scalar($query, array $map = [], $in = false){
-
-		$result = $this->read($query, $map, $in);
+		$result = $this->read($query, $map, $in, \PDO::FETCH_NUM);
 		foreach($result as $row){ return $row[0]; }
 		return null;
 	}
@@ -66,7 +64,7 @@ trait ReadQueriesTrait {
 	 */
 	function scalars($query, array $map = [], $in = false){
 
-		$result = $this->read($query, $map, $in);
+		$result = $this->read($query, $map, $in, \PDO::FETCH_NUM);
 		$final = [];
 		foreach($result as $row){ $final[] = $row[0]; }
 		return $final;
@@ -77,7 +75,7 @@ trait ReadQueriesTrait {
 	 */
 	function keypair($query, array $map = [], $in = false){
 
-		$result = $this->read($query, $map, $in);
+		$result = $this->read($query, $map, $in, \PDO::FETCH_NUM);
 		$final = [];
 		foreach($result as $row){
 			$final[$row[0]] = $row[1];
@@ -90,7 +88,7 @@ trait ReadQueriesTrait {
 	 */
 	function keyrow($query, array $map = [], $in = false){
 
-		$result = $this->read($query, $map, $in);
+		$result = $this->read($query, $map, $in, \PDO::FETCH_BOTH);
 		$final = [];
 		foreach($result as $row){
 			$final[$row[0]] = $row;
@@ -103,7 +101,7 @@ trait ReadQueriesTrait {
 	 */
 	function keyrows($query, array $map = [], $in = false){
 
-		$result = $this->read($query, $map, $in);
+		$result = $this->read($query, $map, $in, \PDO::FETCH_BOTH);
 		$final = [];
 		foreach($result as $row){
 			$final[$row[0]][] = $row;
