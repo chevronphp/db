@@ -22,7 +22,11 @@ trait QueryBuilderTrait {
 		$final = $replacements = array();
 		foreach( $iter1 as $key => $value ){
 			if(is_array($value)){
-				$replacements[] = rtrim(str_repeat("?, ", count($value)), ", ");
+				if(!$value){
+					$replacements[] = "NULL";
+				}else{
+					$replacements[] = rtrim(str_repeat("?, ", count($value)), ", ");
+				}
 			}
 			$final = array_merge($final, (array)$value);
 		}
@@ -72,20 +76,42 @@ trait QueryBuilderTrait {
 	 * @param int $multiple How many times to repeat the paren pairs
 	 * @return array
 	 */
+	// protected function parenPairs(array $map, $multiple){
+
+	// 	$tmp = $this->mapColumns($map);
+	// 	$columns = array_keys($tmp);
+	// 	$tokens  = array_values($tmp);
+
+	// 	$columns = sprintf("(`%s`)", implode("`, `", $columns));
+	// 	$tokens  = sprintf("(%s)",   implode(", ",   $tokens));
+
+	// 	if($multiple){
+	// 		$tokens = rtrim(str_repeat("{$tokens},", $multiple), ",");
+	// 	}
+
+	// 	return array( $columns, $tokens );
+	// }
+
+
 	protected function parenPairs(array $map, $multiple){
-
-		$tmp = $this->mapColumns($map);
-		$columns = array_keys($tmp);
-		$tokens  = array_values($tmp);
-
-		$columns = sprintf("(`%s`)", implode("`, `", $columns));
-		$tokens  = sprintf("(%s)",   implode(", ",   $tokens));
-
-		if($multiple){
-			$tokens = rtrim(str_repeat("{$tokens},", $multiple), ",");
+		$tokenStr = $tokens = $columns = "";
+		if(!$multiple){ // nest single statements so they act like multi statements
+			$map = [$map];
 		}
-
-		return array( $columns, $tokens );
+		foreach($map as $row){
+			$tmp = $this->mapColumns($row);
+			$columns = array_keys($tmp);
+			$columns = sprintf("(`%s`)", implode("`, `", $columns));
+			$tokens  = array_values($tmp);
+			$tokens  = sprintf("(%s)",   implode(", ",   $tokens));
+			if($multiple){
+				$tokenStr .= "{$tokens},"; // stack each set of token values to respect different values in each
+			}
+		}
+		if(empty($tokenStr)){
+			$tokenStr = $tokens;
+		}
+		return array( $columns, rtrim($tokenStr, ",") );
 	}
 
 	/**

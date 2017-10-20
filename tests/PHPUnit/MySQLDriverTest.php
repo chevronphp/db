@@ -251,6 +251,27 @@ class MySQLDriverTest extends PHPUnit_Framework_TestCase {
 
 	}
 
+	function test_multi_replace2(){
+
+		$dbConn = $this->getDbConn();
+
+		$num = $dbConn->multi_replace("test_table", array(
+			array(
+				"test_value"  => "seventh value",
+				"test_score"  => [true, 70],
+				"test_key"    => 2,
+			),
+			array(
+				"test_value"  => "eighth value",
+				"test_score"  => 80,
+				"test_key"    => 3,
+			),
+		));
+
+		$this->assertEquals(4, $num);
+
+	}
+
 	function test_scalar(){
 
 		$dbConn = $this->getDbConn();
@@ -514,13 +535,32 @@ class MySQLDriverTest extends PHPUnit_Framework_TestCase {
 		);
 
 		$expected_columns = "(`col1`, `col2`)";
-		$expected_tokens  = "(?, ?),(?, ?),(?, ?)";
+		$expected_tokens  = "(?, ?),(?, ?)";
 
-		$result = $method->invokeArgs($dbConn, array($data, 3));
+		$result = $method->invokeArgs($dbConn, array($data, count($data)));
 		list( $columns, $tokens ) = $result;
 
 		$this->assertEquals($columns, $expected_columns, "columns");
 		$this->assertEquals($tokens,  $expected_tokens,  "tokens");
+	}
+
+	public function test_parenPairs_multiple_array(){
+		$dbConn = $this->getDbConn();
+		$method = $this->getMethodParenPairs();
+
+		$data = array(
+			array("col1" => "val1", "col2" => [true, "NOW()"]),
+			array("col1" => "val3", "col2" => "val4"),
+		);
+
+		$expected_columns = "(`col1`, `col2`)";
+		$expected_tokens  = "(?, NOW()),(?, ?)";
+
+		$result = $method->invokeArgs($dbConn, array($data, count($data)));
+		list( $columns, $tokens ) = $result;
+
+		$this->assertEquals($columns, $expected_columns, "Format Error: Query::paren_pairs ... columns (multi)");
+		$this->assertEquals($tokens,  $expected_tokens,  "Format Error: Query::paren_pairs ... tokens (multi)");
 	}
 
 	function test_filterData(){

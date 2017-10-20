@@ -4,3 +4,4 @@
 /composer.lock
 /output/*
 /clover.xml
+.DS_Store
